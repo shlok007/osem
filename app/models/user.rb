@@ -179,6 +179,10 @@ class User < ActiveRecord::Base
     !confirmed_at.nil?
   end
 
+  def revoke
+    self.confirmed_at = nil
+  end
+
   def proposals(conference)
     events.where('program_id = ? AND event_users.event_role=?', conference.program.id, 'submitter')
   end

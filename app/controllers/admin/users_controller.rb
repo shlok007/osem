@@ -10,6 +10,19 @@ module Admin
       @users = User.all
     end
 
+    def toggle_confirmation
+      user = User.find(params[:id])
+
+      if params[:value] == "true"
+        user.confirm
+        user.save
+      elsif params[:value] == "false"
+        user.revoke
+        user.save
+      end
+      render :nothing => true
+    end
+
     def show
       # Variable @show_attributes holds the attributes that are visible for the 'show' action
       # If you want to change the attributes that are shown in the 'show' action of users
