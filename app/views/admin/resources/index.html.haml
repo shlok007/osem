@@ -10,9 +10,8 @@
       %table.table.table-hover.datatable
         %thead
           %th Name
-          %th Total Quantity
+          %th Left( Left/Total )
           %th Used
-          %th Left( Used/Total )
           %th Actions
         %tbody
           - @conference.resources.each do |resource|
@@ -22,11 +21,9 @@
                   = link_to(admin_conference_resource_path(@conference.short_title, resource.id)) do
                     = resource.name
                 %td
-                  = resource.quantity
+                  = resource_quantity_left(resource)
                 %td.col-sm-1.col-md-1
                   = f.input :used, label: false
-                %td
-                  = resource.quantity_left
                 %td
                   .btn-group
                     = f.action :submit, as: :button, label: 'Save', button_html: { class: 'btn btn-success' }

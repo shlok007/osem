@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170129075432) do
+ActiveRecord::Schema.define(version: 20170129075434) do
 
   create_table "ahoy_events", force: :cascade do |t|
     t.uuid     "visit_id",   limit: 16
@@ -346,7 +346,7 @@ ActiveRecord::Schema.define(version: 20170129075432) do
 
   create_table "resources", force: :cascade do |t|
     t.string  "name"
-    t.string  "description"
+    t.text    "description"
     t.integer "quantity"
     t.integer "used",          default: 0
     t.integer "conference_id"

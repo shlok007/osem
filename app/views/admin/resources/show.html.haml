@@ -3,7 +3,7 @@
     %h3
       = @resource.name
       .btn-group.pull-right
-        = link_to 'Edit', admin_conference_resource_path(@conference.short_title, @resource), class: 'btn btn-mini btn-primary'
+        = link_to 'Edit', edit_admin_conference_resource_path(@conference.short_title, @resource), class: 'btn btn-mini btn-primary'
 
 %br
 .row
@@ -23,4 +23,4 @@
         %td
           %b Quantity left
         %td
-          = @resource.quantity_left
+          = resource_quantity_left(@resource)
