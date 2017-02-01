@@ -72,6 +72,7 @@ Osem::Application.routes.draw do
         get 'reports' => 'events#reports'
       end
 
+      resources :resources
       resources :tickets
       resources :sponsors, except: [:show]
       resources :lodgings, except: [:show]
@@ -121,6 +122,7 @@ Osem::Application.routes.draw do
     # TODO: change conference_registrations to singular resource
     resource :conference_registration, path: 'register'
     resources :tickets, only: [:index]
+    resources :resources, only: [:index]
     resources :ticket_purchases, only: [:create, :destroy]
     resources :payments, only: [:index, :new, :create]
     resource :subscriptions, only: [:create, :destroy]
