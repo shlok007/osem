@@ -21,18 +21,18 @@
                   = link_to(admin_conference_resource_path(@conference.short_title, resource.id)) do
                     = resource.name
                 %td
-                  = resource_quantity_left(resource)
+                  = quantity_left_of(resource)
                 %td.col-sm-1.col-md-1
                   = f.input :used, label: false
                 %td
                   .btn-group
                     = f.action :submit, as: :button, label: 'Save', button_html: { class: 'btn btn-success' }
                     = link_to 'Edit', edit_admin_conference_resource_path(@conference.short_title, resource.id),
-                      method: :get, class: 'btn btn-primary'
+                      method: :get, class: 'btn btn-primary', disabled: !(can? :update, resource)
                     = link_to 'Delete', admin_conference_resource_path(@conference.short_title, resource.id),
-                      method: :delete, class: 'btn btn-danger',
+                      method: :delete, class: 'btn btn-danger', disabled: !(can? :destroy, resource),
                       data: { confirm: "Do you really want to delete #{resource.name}?" }
 .row
   .col-md-12
-    = link_to 'Add Resource', new_admin_conference_resource_path, class: 'btn btn-success pull-right'
+    = link_to 'Add Resource', new_admin_conference_resource_path, class: 'btn btn-success pull-right', disabled: !(can? :create, Resource.new(conference_id: @conference_id))
 
