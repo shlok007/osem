@@ -247,7 +247,7 @@ class Ability
     # ids of all the conferences for which the user has the 'volunteers_coordinator' role
     conf_ids_for_volunteers_coordinator = Conference.with_role(:volunteers_coordinator, user).pluck(:id)
 
-    can [:index, :show, :update], Resource, conference_id: conf_ids_for_coordinator
+    can [:index, :show, :update], Resource, conference_id: conf_ids_for_volunteers_coordinator
     can :manage, Vposition, conference_id: conf_ids_for_volunteers_coordinator
     can :manage, Vday, conference_id: conf_ids_for_volunteers_coordinator
 
