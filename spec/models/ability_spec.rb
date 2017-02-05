@@ -235,7 +235,7 @@ describe 'User' do
       it{ should be_able_to(:index, my_event.comment_threads.first) }
       it{ should_not be_able_to(:index, other_event.comment_threads.first) }
 
-      it{ should be_able_to(:manage, my_conference.resources.first)}
+      it{ should be_able_to(:manage, resource)}
 
       %w(organizer cfp info_desk volunteers_coordinator).each do |role|
         it{ should be_able_to(:toggle_user, Role.find_by(name: role, resource: my_conference)) }
@@ -306,10 +306,10 @@ describe 'User' do
       it{ should be_able_to(:index, my_event.comment_threads.first) }
       it{ should_not be_able_to(:index, other_event.comment_threads.first) }
 
-      it{ should_not be_able_to(:manage, my_conference.resources.first)}
-      it{ should be_able_to(:index, my_conference.resources.first)}
-      it{ should be_able_to(:show, my_conference.resources.first)}
-      it{ should be_able_to(:update, my_conference.resources.first)}
+      it{ should_not be_able_to(:manage, resource)}
+      it{ should be_able_to(:index, resource)}
+      it{ should be_able_to(:show, resource)}
+      it{ should be_able_to(:update, resource)}
 
       it_behaves_like 'user with any role'
       it_behaves_like 'user with non-organizer role', 'cfp'
@@ -373,10 +373,10 @@ describe 'User' do
       it{ should_not be_able_to(:index, my_event.comment_threads.first) }
       it{ should_not be_able_to(:index, other_event.comment_threads.first) }
 
-      it{ should_not be_able_to(:manage, my_conference.resources.first)}
-      it{ should be_able_to(:index, my_conference.resources.first)}
-      it{ should be_able_to(:show, my_conference.resources.first)}
-      it{ should be_able_to(:update, my_conference.resources.first)}
+      it{ should_not be_able_to(:manage, resource)}
+      it{ should be_able_to(:index, resource)}
+      it{ should be_able_to(:show, resource)}
+      it{ should be_able_to(:update, resource)}
 
       it_behaves_like 'user with any role'
       it_behaves_like 'user with non-organizer role', 'info_desk'
@@ -440,10 +440,10 @@ describe 'User' do
       it{ should_not be_able_to(:index, my_event.comment_threads.first) }
       it{ should_not be_able_to(:index, other_event.comment_threads.first) }
 
-      it{ should_not be_able_to(:manage, my_conference.resources.first)}
-      it{ should be_able_to(:index, my_conference.resources.first)}
-      it{ should be_able_to(:show, my_conference.resources.first)}
-      it{ should be_able_to(:update, my_conference.resources.first)}
+      it{ should_not be_able_to(:manage, resource)}
+      it{ should be_able_to(:index, resource)}
+      it{ should be_able_to(:show, resource)}
+      it{ should be_able_to(:update, resource)}
 
       it 'should be_able to :manage Vposition'
       it 'should be_able to :manage Vday'
