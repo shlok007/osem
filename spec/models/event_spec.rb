@@ -327,4 +327,12 @@ describe Event do
       expect(other_event.week).to eq 48
     end
   end
+
+  describe '#comments_count' do
+    create(:comment, commentable_type: 'Event', commentable_id: subject.id)
+    
+    it 'has a valid counter cache' do
+      expect(subject.comments_count).to eq 1
+    end
+  end
 end
