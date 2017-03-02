@@ -4,7 +4,7 @@ feature Role do
   let(:conference) { create(:conference) }
   let(:role_names) { Role.all.each.map(&:name) }
 
-  shared_examples 'should successfully edit' do |role_name, by_role_name|
+  shared_examples 'successfully edits' do |role_name, by_role_name|
     let!(:role) { Role.find_by(name: role_name, resource: conference) }
     let!(:by_role) { Role.find_by(name: by_role_name, resource: conference) }
     let!(:user_to_sign_in) { create(:user, role_ids: [by_role.id]) }
@@ -25,7 +25,7 @@ feature Role do
     end
   end
 
-  shared_examples 'should successfully' do |role_name, by_role_name|
+  shared_examples 'successfully' do |role_name, by_role_name|
     let!(:role) { Role.find_by(name: role_name, resource: conference) }
     let!(:user_with_role) { create(:user, role_ids: [role.id]) }
     let!(:by_role) { Role.find_by(name: by_role_name, resource: conference) }
@@ -37,7 +37,7 @@ feature Role do
       visit admin_conference_roles_path(conference.short_title)
     end
 
-    scenario "add role #{role_name}", feature: true, js: true do
+    scenario "adds role #{role_name}", feature: true, js: true do
       click_link('Users', href: admin_conference_role_path(conference.short_title, role_name))
 
       fill_in 'user_email', with: user_with_no_role.email
@@ -47,7 +47,7 @@ feature Role do
       expect(user_with_no_role.has_role?(role.name, conference)).to eq true
     end
 
-    scenario "remove role #{role_name}", feature: true, js: true do
+    scenario "removes role #{role_name}", feature: true, js: true do
       click_link('Users', href: admin_conference_role_path(conference.short_title, role_name))
 
       bootstrap_switch = first('td').find('.bootstrap-switch-container')
@@ -100,13 +100,13 @@ feature Role do
 
   context 'organizer' do
     Role.all.each.map(&:name).each do |role|
-      it_behaves_like 'should successfully', role, 'organizer'
-      it_behaves_like 'should successfully edit', role, 'organizer'
+      it_behaves_like 'successfully', role, 'organizer'
+      it_behaves_like 'successfully edits', role, 'organizer'
     end
   end
 
   context 'volunteers_coordinator' do
-    it_behaves_like 'should successfully', 'volunteers_coordinator', 'volunteers_coordinator'
+    it_behaves_like 'successfully', 'volunteers_coordinator', 'volunteers_coordinator'
     it_behaves_like 'does not successfully edit', 'volunteers_coordinator', 'volunteers_coordinator'
 
     Role.all.each.map(&:name).reject { |role| role == 'volunteers_coordinator' }.each do |role|
@@ -116,7 +116,7 @@ feature Role do
   end
 
   context 'cfp' do
-    it_behaves_like 'should successfully', 'cfp', 'cfp'
+    it_behaves_like 'successfully', 'cfp', 'cfp'
     it_behaves_like 'does not successfully edit', 'cfp', 'cfp'
 
     Role.all.each.map(&:name).reject { |role| role == 'cfp' }.each do |role|
@@ -126,7 +126,7 @@ feature Role do
   end
 
   context 'info_desk' do
-    it_behaves_like 'should successfully', 'info_desk', 'info_desk'
+    it_behaves_like 'successfully', 'info_desk', 'info_desk'
     it_behaves_like 'does not successfully edit', 'info_desk', 'info_desk'
 
     Role.all.each.map(&:name).reject { |role| role == 'info_desk' }.each do |role|
