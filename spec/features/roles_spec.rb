@@ -4,7 +4,7 @@ feature Role do
   let(:conference) { create(:conference) }
   let(:role_names) { Role.all.each.map(&:name) }
 
-  shared_examples 'edit role successfully' do |role_name, by_role_name|
+  shared_examples 'should successfully edit' do |role_name, by_role_name|
     let!(:role) { Role.find_by(name: role_name, resource: conference) }
     let!(:by_role) { Role.find_by(name: by_role_name, resource: conference) }
     let!(:user_to_sign_in) { create(:user, role_ids: [by_role.id]) }
@@ -14,7 +14,7 @@ feature Role do
       visit admin_conference_roles_path(conference.short_title)
     end
 
-    scenario 'edits role', feature: true, js: true do
+    scenario "role #{role_name}", feature: true, js: true do
       click_link('Edit', href: edit_admin_conference_role_path(conference.short_title, role_name))
       fill_in 'role_description', with: 'changed description'
       click_button 'Update Role'
@@ -25,7 +25,7 @@ feature Role do
     end
   end
 
-  shared_examples 'add remove users successfully' do |role_name, by_role_name|
+  shared_examples 'should successfully' do |role_name, by_role_name|
     let!(:role) { Role.find_by(name: role_name, resource: conference) }
     let!(:user_with_role) { create(:user, role_ids: [role.id]) }
     let!(:by_role) { Role.find_by(name: by_role_name, resource: conference) }
@@ -37,7 +37,7 @@ feature Role do
       visit admin_conference_roles_path(conference.short_title)
     end
 
-    scenario 'adds role', feature: true, js: true do
+    scenario "add role #{role_name}", feature: true, js: true do
       click_link('Users', href: admin_conference_role_path(conference.short_title, role_name))
 
       fill_in 'user_email', with: user_with_no_role.email
@@ -47,7 +47,7 @@ feature Role do
       expect(user_with_no_role.has_role?(role.name, conference)).to eq true
     end
 
-    scenario 'removes role', feature: true, js: true do
+    scenario "edit role #{role_name}", feature: true, js: true do
       click_link('Users', href: admin_conference_role_path(conference.short_title, role_name))
 
       bootstrap_switch = first('td').find('.bootstrap-switch-container')
@@ -59,7 +59,7 @@ feature Role do
     end
   end
 
-  shared_examples 'add remove users not successfully' do |role_name, by_role_name|
+  shared_examples 'should not successfully' do |role_name, by_role_name|
     let!(:role) { Role.find_by(name: role_name, resource: conference) }
     let!(:user_with_role) { create(:user, role_ids: [role.id]) }
     let!(:by_role) { Role.find_by(name: by_role_name, resource: conference) }
@@ -71,20 +71,20 @@ feature Role do
       visit admin_conference_roles_path(conference.short_title)
     end
 
-    scenario 'adds role', feature: true, js: true do
+    scenario "add role #{role_name}", feature: true, js: true do
       click_link('Users', href: admin_conference_role_path(conference.short_title, role_name))
 
       expect(page.has_field?('user_email')).to eq false
     end
 
-    scenario 'removes role', feature: true, js: true do
+    scenario "edit role #{role_name}", feature: true, js: true do
       click_link('Users', href: admin_conference_role_path(conference.short_title, role_name))
 
       expect(first('td').has_css?('.bootstrap-switch-container')).to eq false
     end
   end
 
-  shared_examples 'edit role not successfully' do |role_name, by_role_name|
+  shared_examples 'should not successfully edit' do |role_name, by_role_name|
     let!(:role) { Role.find_by(name: role_name, resource: conference) }
     let!(:by_role) { Role.find_by(name: by_role_name, resource: conference) }
     let!(:user_to_sign_in) { create(:user, role_ids: [by_role.id]) }
@@ -93,59 +93,45 @@ feature Role do
       sign_in user_to_sign_in
       visit admin_conference_roles_path(conference.short_title)
     end
-    scenario 'edits role' do
+    scenario "role #{role_name}" do
       expect(page.has_link?('Edit', href: edit_admin_conference_role_path(conference.short_title, role_name))).to eq false
     end
   end
 
   context 'organizer' do
     Role.all.each.map(&:name).each do |role|
-      describe "for #{role} role" do
-        it_behaves_like 'add remove users successfully', role, 'organizer'
-        it_behaves_like 'edit role successfully', role, 'organizer'
-      end
+      it_behaves_like 'should successfully', role, 'organizer'
+      it_behaves_like 'should successfully edit', role, 'organizer'
     end
   end
 
   context 'volunteers_coordinator' do
-    describe 'for volunteers_coordinator role' do
-      it_behaves_like 'add remove users successfully', 'volunteers_coordinator', 'volunteers_coordinator'
-      it_behaves_like 'edit role not successfully', 'volunteers_coordinator', 'volunteers_coordinator'
-    end
+    it_behaves_like 'should successfully', 'volunteers_coordinator', 'volunteers_coordinator'
+    it_behaves_like 'should not successfully edit', 'volunteers_coordinator', 'volunteers_coordinator'
 
     Role.all.each.map(&:name).reject { |role| role == 'volunteers_coordinator' }.each do |role|
-      describe "for #{role} role" do
-        it_behaves_like 'add remove users not successfully', role, 'volunteers_coordinator'
-        it_behaves_like 'edit role not successfully', role, 'volunteers_coordinator'
-      end
+      it_behaves_like 'should not successfully', role, 'volunteers_coordinator'
+      it_behaves_like 'should not successfully edit', role, 'volunteers_coordinator'
     end
   end
 
   context 'cfp' do
-    describe 'for cfp role' do
-      it_behaves_like 'add remove users successfully', 'cfp', 'cfp'
-      it_behaves_like 'edit role not successfully', 'cfp', 'cfp'
-    end
+    it_behaves_like 'should successfully', 'cfp', 'cfp'
+    it_behaves_like 'should not successfully edit', 'cfp', 'cfp'
 
     Role.all.each.map(&:name).reject { |role| role == 'cfp' }.each do |role|
-      describe "for #{role} role" do
-        it_behaves_like 'add remove users not successfully', role, 'cfp'
-        it_behaves_like 'edit role not successfully', role, 'cfp'
-      end
+      it_behaves_like 'should not successfully', role, 'cfp'
+      it_behaves_like 'should not successfully edit', role, 'cfp'
     end
   end
 
   context 'info_desk' do
-    describe 'for info_desk role' do
-      it_behaves_like 'add remove users successfully', 'info_desk', 'info_desk'
-      it_behaves_like 'edit role not successfully', 'info_desk', 'info_desk'
-    end
+    it_behaves_like 'should successfully', 'info_desk', 'info_desk'
+    it_behaves_like 'should not successfully edit', 'info_desk', 'info_desk'
 
     Role.all.each.map(&:name).reject { |role| role == 'info_desk' }.each do |role|
-      describe "for #{role} role" do
-        it_behaves_like 'add remove users not successfully', role, 'info_desk'
-        it_behaves_like 'edit role not successfully', role, 'info_desk'
-      end
+      it_behaves_like 'should not successfully', role, 'info_desk'
+      it_behaves_like 'should not successfully edit', role, 'info_desk'
     end
   end
 end
