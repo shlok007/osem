@@ -18,7 +18,13 @@ Osem::Application.routes.draw do
   resources :users, except: [:new, :index, :create, :destroy]
 
   namespace :admin do
-    resources :organizations
+    resources :organizations do
+      resources :roles, except: [ :new, :create ] do
+        member do
+          post :toggle_organization_role
+        end
+      end
+    end
     resources :users do
       member do
         patch :toggle_confirmation
@@ -81,7 +87,7 @@ Osem::Application.routes.draw do
       resources :emails, only: [:show, :update, :index]
       resources :roles, except: [ :new, :create ] do
         member do
-          post :toggle_user
+          post :toggle_conference_roles
         end
       end
 

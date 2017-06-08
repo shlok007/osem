@@ -1,10 +1,11 @@
 module Admin
   class RolesController < Admin::BaseController
+    load_and_authorize_resource :organization
     load_and_authorize_resource :conference, find_by: :short_title
     before_action :set_selection
     authorize_resource :role, except: :index
     # Show flash message with ajax calls
-    after_action :prepare_unobtrusive_flash, only: :toggle_user
+    after_action :prepare_unobtrusive_flash, only: [:toggle_conference_roles, :toggle_organization_role]
 
     def index
       @roles = Role.where(resource: @conference)
@@ -32,7 +33,45 @@ module Admin
       end
     end
 
-    def toggle_user
+    def toggle_organization_role
+      user = User.find_by(email: user_params[:email])
+      state = user_params[:state]
+
+      unless user
+        redirect_to admin_organization_role_path(@organization, @role.name),
+                    error: 'Could not find user. Please provide a valid email!'
+        return
+      end
+
+      # Organization must have atleast 1 organization admin
+      if @role.name == 'organization_admin' && state == 'false' && @role.users.count == 1
+        redirect_to admin_organization_role_path(@organization, @role.name),
+                    error: 'The organization must have atleast 1 organization admin!'
+        return
+      end
+
+      if state == 'false'
+        if user.remove_role @role.name, @organization
+          flash[:notice] = "Successfully removed role #{@role.name} from user #{user.email}"
+        else
+          flash[:error] = "Could not remove role #{@role.name} from user #{user.email}"
+        end
+      elsif user.has_role? @role.name, @organization
+        flash[:error] = "User #{user.email} already has the role #{@role.name}"
+        # Add user
+      elsif user.add_role @role.name, @organization
+        flash[:notice] = "Successfully added role #{@role.name} to user #{user.email}"
+      else
+        flash[:error] = "Coud not add role #{@role.name} to #{user.email}"
+      end
+
+      respond_to do |format|
+        format.js
+        format.html { redirect_to admin_organization_role_path(@organization, @role.name) }
+      end
+    end
+
+    def toggle_conference_roles
       user = User.find_by(email: user_params[:email])
       state = user_params[:state]
 
@@ -49,7 +88,7 @@ module Admin
         return
       end
 
-      # Remove user
+      # toggle user roles from conferences
       if state == 'false'
         if user.remove_role @role.name, @conference
           flash[:notice] = "Successfully removed role #{@role.name} from user #{user.email}"
@@ -77,7 +116,11 @@ module Admin
       # Set 'organizer' as default role, when there is no other selection
       @selection = params[:id] ? params[:id].parameterize.underscore : 'organizer'
 
-      @role = Role.find_by(name: @selection, resource: @conference)
+      @role = if @conference.nil?
+                Role.find_by(name: @selection, resource: @organization)
+              else
+                Role.find_by(name: @selection, resource: @conference)
+              end
     end
 
     def role_params

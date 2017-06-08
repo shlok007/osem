@@ -71,7 +71,6 @@ describe Admin::OrganizationsController do
 
         it 'redirects to root' do
           delete :destroy, id: organization.id
-
           expect(flash[:alert]).to eq('You are not authorized to access this area!')
           expect(response).to redirect_to(root_path)
         end
@@ -161,7 +160,6 @@ describe Admin::OrganizationsController do
 
         it 'redirects to index' do
           delete :destroy, id: organization.id
-
           expect(flash[:notice]).to eq('Organization successfully destroyed')
           expect(response).to redirect_to(admin_organizations_path)
         end
