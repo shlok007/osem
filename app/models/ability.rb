@@ -198,7 +198,10 @@ class Ability
                          commentable_id: Event.where(program_id: Program.where(conference_id: conf_ids_for_organization_admin_and_organizer).pluck(:id)).pluck(:id)
 
     # Abilities for Role (Conference resource)
-    can [:index, :show], Role
+    can [:index, :show], Role do |role|
+      role.resource_type == 'Conference'
+    end
+
     can [:edit, :update, :toggle_user], Role do |role|
       role.resource_type == 'Conference' && (conf_ids_for_organization_admin_and_organizer.include? role.resource_id)
     end
@@ -230,8 +233,9 @@ class Ability
                          commentable_id: Event.where(program_id: Program.where(conference_id: conf_ids_for_cfp).pluck(:id)).pluck(:id)
 
     # Abilities for Role (Conference resource)
-    can [:index, :show], Role
-
+    can [:index, :show], Role do |role|
+      role.resource_type == 'Conference'
+    end
     # Can add or remove users from role, when user has that same role for the conference
     # Eg. If you are member of the CfP team, you can add more CfP team members (add users to the role 'CfP')
     can :toggle_user, Role do |role|
@@ -259,8 +263,9 @@ class Ability
     end
 
     # Abilities for Role (Conference resource)
-    can [:index, :show], Role
-
+    can [:index, :show], Role do |role|
+      role.resource_type == 'Conference'
+    end
     # Can add or remove users from role, when user has that same role for the conference
     # Eg. If you are member of the CfP team, you can add more CfP team members (add users to the role 'CfP')
     can :toggle_user, Role do |role|
@@ -278,8 +283,9 @@ class Ability
     can :manage, Vday, conference_id: conf_ids_for_volunteers_coordinator
 
     # Abilities for Role (Conference resource)
-    can [:index, :show], Role
-
+    can [:index, :show], Role do |role|
+      role.resource_type == 'Conference'
+    end
     # Can add or remove users from role, when user has that same role for the conference
     # Eg. If you are member of the CfP team, you can add more CfP team members (add users to the role 'CfP')
     can :toggle_user, Role do |role|
