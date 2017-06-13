@@ -143,7 +143,7 @@ describe 'User' do
     shared_examples 'user with any role' do
       before do
         @other_organization = create(:organization)
-        @other_conference = create(:conference)
+        @other_conference = create(:conference, @other_organization)
       end
 
       it{ should_not be_able_to(:update, Role.find_by(name: 'organization_admin', resource: @other_organization)) }
@@ -181,8 +181,6 @@ describe 'User' do
       it{ should_not be_able_to(:manage, other_conference) }
       it{ should be_able_to(:manage, my_conference) }
       it{ should be_able_to(:manage, organization) }
-
-      it_behaves_like 'user with any role'
     end
 
     context 'when user has the role organizer' do
