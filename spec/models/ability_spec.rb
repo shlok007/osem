@@ -199,8 +199,10 @@ describe 'User' do
         should be_able_to(:destroy, my_venue)
       end
 
-      it{ should be_able_to(:new, Conference) }
-      it{ should be_able_to(:create, Conference) }
+      it{ should_not be_able_to(:new, Organization)}
+      it{ should_not be_able_to(:create, Organization)}
+      it{ should_not be_able_to(:new, Conference) }
+      it{ should_not be_able_to(:create, Conference) }
       it{ should be_able_to(:manage, my_conference) }
       it{ should_not be_able_to(:manage, conference_public) }
       it{ should be_able_to(:manage, my_conference.splashpage) }
