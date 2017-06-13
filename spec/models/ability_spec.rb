@@ -143,7 +143,7 @@ describe 'User' do
     shared_examples 'user with any role' do
       before do
         @other_organization = create(:organization)
-        @other_conference = create(:conference, @other_organization)
+        @other_conference = create(:conference, organization: @other_organization)
       end
 
       it{ should_not be_able_to(:update, Role.find_by(name: 'organization_admin', resource: @other_organization)) }
