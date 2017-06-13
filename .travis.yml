@@ -13,11 +13,6 @@ notifications:
   email:
     on_success: change
     on_failure: change
-  irc:
-    channels:
-      - "chat.freenode.net#osem"
-    on_success: change
-    on_failure: change
 before_script:
   - cp config/database.yml.travis config/database.yml
   - cp config/secrets.yml.example config/secrets.yml

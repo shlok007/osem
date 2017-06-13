@@ -160,7 +160,6 @@ class Ability
     # conferences that belong to organizations for which user is 'organization_admin'
     conf_ids_for_organization_admin_and_organizer = conf_ids_for_organization_admin.concat(Conference.with_role(:organizer, user).pluck(:id)).uniq
     can :manage, Resource, conference_id: conf_ids_for_organization_admin_and_organizer
-    can [:new, :create], Conference if user.has_role?(:organizer, :any)
     can :manage, Conference, id: conf_ids_for_organization_admin_and_organizer
     can :manage, Splashpage, conference_id: conf_ids_for_organization_admin_and_organizer
     can :manage, Contact, conference_id: conf_ids_for_organization_admin_and_organizer
