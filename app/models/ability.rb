@@ -76,7 +76,7 @@ class Ability
     not_signed_in
 
     can :manage, User, id: user.id
-
+    cannot [:index, :new, :create, :toggle_confirmation], User 
     can :manage, Registration, user_id: user.id
 
     can [:new, :create], Registration do |registration|
