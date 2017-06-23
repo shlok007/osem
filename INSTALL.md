@@ -60,6 +60,25 @@ We use [Stripe](https://stripe.com) for accepting your ticket payments securely 
 Our application uses iFrame for accepting your user's payment details without storing them, making the application PCI SAQ-A Compliant.
 Please refer to [PAYMENTS](PAYMENTS.md) documentation file for setting up your stripe account and start accepting payments from your users.
 
+## Dependencies
+
+### ImageMagick
+We use [ImageMagick](http://imagemagick.org/) for image manipulation so it needs to be available in your installation.
+If you would like to resize exisiting logos in your OSEM installation you can do so by running the following rake task:
+
+```shell
+$ bundle exec rake logo:reprocess
+```
+
+### openID
+In order to use [openID](http://openid.net/) logins for your OSEM installation you need to register your application with the providers ([Google](https://code.google.com/apis/console#:access), [GitHub](https://github.com/settings/applications/new) or [Facebook](https://developers.facebook.com/)) and enter their API keys in the environment variables found in your *.env* file(s).
+
+## Recurring Jobs
+Open a separate terminal and go into the directory where the rails app is present, and type the following to start the delayed_jobs worker for sending email notifications.
+```
+bundle exec rake jobs:work
+```
+
 ## Setting up OSEM for the first time
 Once after hosting OSEM, it is necessary to know that all conferences in OSEM belongs to their organizations. Hence, no conference can be created until and unless there is an organization created first.
 
@@ -88,21 +107,3 @@ After creating organization, head over to the index page of organizations ( `/ad
 For details about each role in OSEM, head over to our wiki.  
 as they say, _with great power comes great responsibility!_
 
-## Dependencies
-
-### ImageMagick
-We use [ImageMagick](http://imagemagick.org/) for image manipulation so it needs to be available in your installation.
-If you would like to resize exisiting logos in your OSEM installation you can do so by running the following rake task:
-
-```shell
-$ bundle exec rake logo:reprocess
-```
-
-### openID
-In order to use [openID](http://openid.net/) logins for your OSEM installation you need to register your application with the providers ([Google](https://code.google.com/apis/console#:access), [GitHub](https://github.com/settings/applications/new) or [Facebook](https://developers.facebook.com/)) and enter their API keys in the environment variables found in your *.env* file(s).
-
-## Recurring Jobs
-Open a separate terminal and go into the directory where the rails app is present, and type the following to start the delayed_jobs worker for sending email notifications.
-```
-bundle exec rake jobs:work
-```
