@@ -103,7 +103,5 @@ After creating organization, head over to the index page of organizations ( `/ad
 ![Alt Text](https://user-images.githubusercontent.com/14155445/27460489-d3ff3314-57d1-11e7-8d90-345692a60292.png)
 ![Alt Text](https://user-images.githubusercontent.com/14155445/27460488-d3fcbb20-57d1-11e7-8714-c3b6c1a0e323.png)
 
-
 For details about each role in OSEM, head over to our wiki.  
 as they say, _with great power comes great responsibility!_
-
