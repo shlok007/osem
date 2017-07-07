@@ -20,7 +20,14 @@ Osem::Application.routes.draw do
   end
 
   namespace :admin do
-    resources :organizations
+    resources :organizations do
+      resources :roles, except: [ :new, :create, :edit ] do
+        member do
+          post :assign_org_admins
+          delete :unassign_org_admins
+        end
+      end
+    end
     resources :users do
       member do
         patch :toggle_confirmation

@@ -1,0 +1,22 @@
+.page-header
+  %h3 Users (#{users.length})
+- if users.present?
+  %table.table.table-striped.table-bordered.table-hover.datatable#users
+    %thead
+      %th Name
+      %th Email
+      - if ( can? :assign_org_admin, @role )
+        %th
+          Actions
+    %tbody
+      - users.each do |user|
+        %tr
+          %td= user.name
+          %td= user.email
+          - if ( can? :unassign_org_admins, @role )
+            %td
+              = link_to 'Remove from organization admins', unassign_org_admins_admin_organization_role_path(organization.id,
+                @role.name, user: {email: user.email}),
+                method: :delete, class: 'btn btn-danger'
+- else
+  %h5 No users found!
