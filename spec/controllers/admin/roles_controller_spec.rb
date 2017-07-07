@@ -74,7 +74,7 @@ describe Admin::RolesController do
       sign_in admin
       post :unassign_org_admin, organization_id: organization.id,
                                 id: 'organization_admin',
-                                user_id: org_admin_user.id
+                                user: { email: org_admin_user.email }
     end
 
     it 'unassigns organization_admin role' do
