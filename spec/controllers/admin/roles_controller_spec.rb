@@ -55,6 +55,8 @@ describe Admin::RolesController do
   end
 
   describe 'POST #assign_org_admins' do
+    let(:org_admin_role) { Role.find_by(name: 'organization_admin', resource: organization) }
+
     before do
       sign_in admin
       post :assign_org_admins, organization_id: organization.id,
@@ -67,7 +69,7 @@ describe Admin::RolesController do
     end
   end
 
-  describe 'DELETE #unassign_org_admins', blah: true do
+  describe 'DELETE #unassign_org_admins' do
     let(:org_admin_role) { Role.find_by(name: 'organization_admin', resource: organization) }
     let!(:org_admin_user) { create(:user, role_ids: [org_admin_role.id]) }
 
@@ -79,7 +81,7 @@ describe Admin::RolesController do
     end
 
     it 'unassigns organization_admin role' do
-      expect(org_admin_user.roles).to eq []
+      expect(org_admin_user.reload.roles).to eq []
     end
   end
 
