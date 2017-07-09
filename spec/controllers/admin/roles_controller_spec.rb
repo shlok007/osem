@@ -5,10 +5,8 @@ describe Admin::RolesController do
   let(:conference) { create(:conference, organization: organization) }
   let(:organizer_role) { Role.find_by(name: 'organizer', resource: conference) }
   let(:cfp_role) { Role.find_by(name: 'cfp', resource: conference) }
-  let(:org_admin_role) { Role.find_by(name: 'organization_admin', resource: organization) }
   let(:admin) { create(:admin) }
 
-  let!(:org_admin_user) { create(:user, role_ids: [organizer_role.id]) }
   let!(:user1) { create(:user, email: 'user1@osem.io') }
   let!(:user2) { create(:user, email: 'user2@osem.io') }
 
@@ -69,12 +67,15 @@ describe Admin::RolesController do
     end
   end
 
-  describe 'DELETE #unassign_org_admins' do
+  describe 'DELETE #unassign_org_admins', blah: true do
+    let(:org_admin_role) { Role.find_by(name: 'organization_admin', resource: organization) }
+    let!(:org_admin_user) { create(:user, role_ids: [org_admin_role.id]) }
+
     before do
       sign_in admin
-      post :unassign_org_admin, organization_id: organization.id,
-                                id: 'organization_admin',
-                                user: { email: org_admin_user.email }
+      delete :unassign_org_admins, organization_id: organization.id,
+                                   id: 'organization_admin',
+                                   user: { email: org_admin_user.email }
     end
 
     it 'unassigns organization_admin role' do

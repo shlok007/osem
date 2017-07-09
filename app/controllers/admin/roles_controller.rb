@@ -1,7 +1,7 @@
 module Admin
   class RolesController < Admin::BaseController
-    load_and_authorize_resource :organization, only: [:show, :assign_org_admins, :unassign_org_admins]
     load_and_authorize_resource :conference, find_by: :short_title
+    load_resource :organization, only: [:show, :assign_org_admins, :unassign_org_admins]
     before_action :set_selection
     authorize_resource :role, except: :index
     # Show flash message with ajax calls
@@ -76,13 +76,6 @@ module Admin
       unless user
         redirect_to admin_organization_role_path(@organization, 'organization_admin'),
                     error: 'Could not find user. Please provide a valid email!'
-        return
-      end
-
-      # Organization must have atleast 1 organization admin
-      if @role.users.count == 1
-        redirect_to admin_organization_role_path(@organization, 'organization_admin'),
-                    error: 'The organization must have atleast 1 organization admin!'
         return
       end
 
