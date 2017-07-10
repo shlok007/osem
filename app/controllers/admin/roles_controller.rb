@@ -3,6 +3,7 @@ module Admin
     load_and_authorize_resource :conference, find_by: :short_title
     load_resource :organization, only: [:show, :assign_org_admins, :unassign_org_admins]
     before_action :set_selection
+    before_action :verify_user, only: [:assign_org_admins, :unassign_org_admins]
     authorize_resource :role, except: :index
     # Show flash message with ajax calls
     after_action :prepare_unobtrusive_flash, only: :toggle_user
@@ -53,36 +54,22 @@ module Admin
     end
 
     def assign_org_admins
-      user = User.find_by(email: user_params[:email])
-      unless user
-        redirect_to admin_organization_role_path(@organization, 'organization_admin'),
-                    error: 'Could not find user. Please provide a valid email!'
-        return
-      end
-
-      if user.has_role? 'organization_admin', @organization
-        flash[:error] = "User #{user.email} already has the role 'Organization admin'"
-      elsif user.add_role 'organization_admin', @organization
-        flash[:notice] = "Successfully added role 'Organization admin' to user #{user.email}"
+      if @user.has_role? 'organization_admin', @organization
+        flash[:error] = "User #{@user.email} already has the role 'Organization admin'"
+      elsif @user.add_role 'organization_admin', @organization
+        flash[:notice] = "Successfully added role 'Organization admin' to user #{@user.email}"
       else
-        flash[:error] = "Coud not add role 'Organization admin' to #{user.email}"
+        flash[:error] = "Coud not add role 'Organization admin' to #{@user.email}"
       end
 
       redirect_to admin_organization_role_path(@organization, 'organization_admin')
     end
 
     def unassign_org_admins
-      user = User.find_by(email: user_params[:email])
-      unless user
-        redirect_to admin_organization_role_path(@organization, 'organization_admin'),
-                    error: 'Could not find user. Please provide a valid email!'
-        return
-      end
-
-      if user.remove_role 'organization_admin', @organization
-        flash[:notice] = "Successfully removed role 'Organization admin' from user #{user.email}"
+      if @user.remove_role 'organization_admin', @organization
+        flash[:notice] = "Successfully removed role 'Organization admin' from user #{@user.email}"
       else
-        flash[:error] = "Could not remove role 'Organization admin' from user #{user.email}"
+        flash[:error] = "Could not remove role 'Organization admin' from user #{@user.email}"
       end
 
       redirect_to admin_organization_role_path(@organization, 'organization_admin')
@@ -140,6 +127,15 @@ module Admin
     end
 
     protected
+
+    def verify_user
+      @user = User.find_by(email: user_params[:email])
+      unless @user
+        redirect_to admin_organization_role_path(@organization, 'organization_admin'),
+                    error: 'Could not find user. Please provide a valid email!'
+        return
+      end
+    end
 
     def set_selection
       unless @conference
