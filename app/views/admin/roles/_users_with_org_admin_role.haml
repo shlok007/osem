@@ -5,7 +5,7 @@
     %thead
       %th Name
       %th Email
-      - if ( can? :assign_org_admin, role )
+      - if ( can? :unassign_org_admins, role )
         %th
           Actions
     %tbody
