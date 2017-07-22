@@ -95,7 +95,7 @@ class AdminAbility
     can :new, Conference
     can :manage, Conference, organization_id: org_ids_for_organization_admin
     can [:index, :show], Role
-    can [:edit, :update], Role do |role|
+    can [:edit, :update, :assign_org_admins, :unassign_org_admins], Role do |role|
       role.resource_type == 'Organization' && (org_ids_for_organization_admin.include? role.resource_id)
     end
     signed_in_with_organizer_role(user, conf_ids_for_organization_admin)
