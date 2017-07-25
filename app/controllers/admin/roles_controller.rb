@@ -16,11 +16,13 @@ module Admin
     end
 
     def show
-      @url = if @track
-               toggle_user_track_admin_conference_role_path(@conference.short_title, @role.name, @track)
-             else
-               toggle_user_admin_conference_role_path(@conference.short_title, @role.name)
-             end
+      unless @conference.nil?
+        @url = if @track
+                 toggle_user_track_admin_conference_role_path(@conference.short_title, @role.name, @track)
+               else
+                 toggle_user_admin_conference_role_path(@conference.short_title, @role.name)
+               end
+      end
       @users = @role.users
       render 'show_org_admins' if @conference.nil?
     end

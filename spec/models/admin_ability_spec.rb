@@ -62,7 +62,6 @@ describe 'User with admin role' do
 
       it{ should_not be_able_to(:update, Role.find_by(name: 'organization_admin', resource: other_organization)) }
       it{ should_not be_able_to(:edit, Role.find_by(name: 'organization_admin', resource: other_organization)) }
-      it{ should_not be_able_to(:show, Role.find_by(name: 'organization_admin', resource: other_organization)) }
 
       it{ should_not be_able_to(:new, User.new) }
       it{ should_not be_able_to(:create, User.new) }
