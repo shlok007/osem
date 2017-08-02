@@ -91,13 +91,11 @@ class AdminAbility
     org_ids_for_organization_admin = Organization.with_role(:organization_admin, user).pluck(:id)
     conf_ids_for_organization_admin = Conference.where(organization_id: org_ids_for_organization_admin).pluck(:id)
 
-    can [:read, :update, :destroy], Organization, id: org_ids_for_organization_admin
+    can [:read, :update, :destroy, :assign_org_admins, :unassign_org_admins, :admins], Organization, id: org_ids_for_organization_admin
     can :new, Conference
     can :manage, Conference, organization_id: org_ids_for_organization_admin
-    can [:index, :show], Role
-    can [:edit, :update, :assign_org_admins, :unassign_org_admins], Role do |role|
-      role.resource_type == 'Organization' && (org_ids_for_organization_admin.include? role.resource_id)
-    end
+    can [:index, :show], Role 
+
     signed_in_with_organizer_role(user, conf_ids_for_organization_admin)
   end
 

@@ -112,7 +112,7 @@ feature Role do
 
     context 'for the organization it belongs to' do
       scenario 'successfully adds role organization_admin' do
-        click_link('Admins', href: admin_organization_role_path(organization.id, 'organization_admin'))
+        click_link('Admins', href: admins_admin_organization_path(organization.id, 'organization_admin'))
 
         fill_in 'user_email', with: user_with_no_role.email
         click_button 'Add'
@@ -122,7 +122,7 @@ feature Role do
       end
 
       scenario 'successfully removes role organization_admin' do
-        click_link('Admins', href: admin_organization_role_path(organization.id, 'organization_admin'))
+        click_link('Admins', href: admins_admin_organization_path(organization.id, 'organization_admin'))
 
         first('tr').find('.btn-danger').click
         expect(organization_admin.has_role?('organization_admin', organization)).to eq false
@@ -131,13 +131,13 @@ feature Role do
 
     context 'for the organizations it does not belong to' do
       scenario 'does not successfully add role organization_admin' do
-        click_link('Admins', href: admin_organization_role_path(other_organization.id, 'organization_admin'))
+        click_link('Admins', href: admins_admin_organization_path(other_organization.id, 'organization_admin'))
 
         expect(page.has_field?('user_email')).to eq false
       end
 
       scenario 'does not successfully removes role organization_admin' do
-        click_link('Admins', href: admin_organization_role_path(other_organization.id, 'organization_admin'))
+        click_link('Admins', href: admins_admin_organization_path(other_organization.id, 'organization_admin'))
         expect(page.has_css?('.btn-danger')).to eq false
       end
     end

@@ -1,8 +1,7 @@
 require 'spec_helper'
 
 describe Admin::RolesController do
-  let(:organization) { create(:organization) }
-  let(:conference) { create(:conference, organization: organization) }
+  let(:conference) { create(:conference) }
   let(:organizer_role) { Role.find_by(name: 'organizer', resource: conference) }
   let(:cfp_role) { Role.find_by(name: 'cfp', resource: conference) }
   let(:admin) { create(:admin) }
@@ -51,37 +50,6 @@ describe Admin::RolesController do
 
     it 'changes the description of the role' do
       expect(cfp_role.description).to eq 'New description for cfp role!'
-    end
-  end
-
-  describe 'POST #assign_org_admins' do
-    let(:org_admin_role) { Role.find_by(name: 'organization_admin', resource: organization) }
-
-    before do
-      sign_in admin
-      post :assign_org_admins, organization_id: organization.id,
-                               id: 'organization_admin',
-                               user: { email: 'user1@osem.io' }
-    end
-
-    it 'assigns organization_admin role' do
-      expect(user1.roles).to eq [org_admin_role]
-    end
-  end
-
-  describe 'DELETE #unassign_org_admins' do
-    let(:org_admin_role) { Role.find_by(name: 'organization_admin', resource: organization) }
-    let!(:org_admin_user) { create(:user, role_ids: [org_admin_role.id]) }
-
-    before do
-      sign_in admin
-      delete :unassign_org_admins, organization_id: organization.id,
-                                   id: 'organization_admin',
-                                   user: { email: org_admin_user.email }
-    end
-
-    it 'unassigns organization_admin role' do
-      expect(org_admin_user.reload.roles).to eq []
     end
   end
 

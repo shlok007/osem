@@ -125,9 +125,9 @@ describe 'User with admin role' do
       let(:other_organization) { create(:organization) }
       let(:other_conference) { create(:conference, organization: other_organization) }
 
-      it{ should be_able_to(:show, Role.find_by(name: 'organization_admin', resource: organization)) }
-      it{ should be_able_to(:assign_org_admins, Role.find_by(name: 'organization_admin', resource: organization)) }
-      it{ should be_able_to(:unassign_org_admins, Role.find_by(name: 'organization_admin', resource: organization)) }
+      it{ should be_able_to(:admins, organization) }
+      it{ should be_able_to(:assign_org_admins, organization) }
+      it{ should be_able_to(:unassign_org_admins, organization) }
       it{ should be_able_to(:manage, my_conference) }
       it{ should be_able_to(:read, organization) }
       it{ should be_able_to(:update, organization) }
@@ -217,7 +217,7 @@ describe 'User with admin role' do
 
       it{ should be_able_to(:manage, resource) }
 
-      it{ should_not be_able_to(:show, Role.find_by(name: 'organization_admin', resource: organization)) }
+      it{ should_not be_able_to(:admins, organization) }
       %w[organizer cfp info_desk volunteers_coordinator].each do |role|
         it{ should be_able_to(:toggle_user, Role.find_by(name: role, resource: my_conference)) }
         it{ should be_able_to(:edit, Role.find_by(name: role, resource: my_conference)) }
@@ -303,7 +303,7 @@ describe 'User with admin role' do
       it{ should be_able_to(:index, resource) }
       it{ should be_able_to(:show, resource) }
       it{ should be_able_to(:update, resource) }
-      it{ should_not be_able_to(:show, Role.find_by(name: 'organization_admin', resource: organization)) }
+      it{ should_not be_able_to(:admins, organization) }
 
       it_behaves_like 'user with any role'
       it_behaves_like 'user with non-organizer role', 'cfp'
@@ -371,7 +371,7 @@ describe 'User with admin role' do
       it{ should be_able_to(:index, resource) }
       it{ should be_able_to(:show, resource) }
       it{ should be_able_to(:update, resource) }
-      it{ should_not be_able_to(:show, Role.find_by(name: 'organization_admin', resource: organization)) }
+      it{ should_not be_able_to(:admins, organization) }
 
       it_behaves_like 'user with any role'
       it_behaves_like 'user with non-organizer role', 'info_desk'
@@ -439,7 +439,7 @@ describe 'User with admin role' do
       it{ should be_able_to(:index, resource) }
       it{ should be_able_to(:show, resource) }
       it{ should be_able_to(:update, resource) }
-      it{ should_not be_able_to(:show, Role.find_by(name: 'organization_admin', resource: organization)) }
+      it{ should_not be_able_to(:admins, organization) }
 
       it 'should be_able to :manage Vposition'
       it 'should be_able to :manage Vday'

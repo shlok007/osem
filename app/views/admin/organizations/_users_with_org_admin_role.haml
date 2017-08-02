@@ -16,7 +16,7 @@
           - if ( can? :unassign_org_admins, role )
             %td
               = link_to 'Remove from organization admin',
-                unassign_org_admins_admin_organization_role_path(organization.id,
+                unassign_org_admins_admin_organization_path(organization.id,
                 role.name,
                 user: {email: user.email}),
                 method: :delete,
