@@ -4,6 +4,7 @@ describe Admin::OrganizationsController do
   let!(:admin) { create(:admin) }
   let!(:organization) { create(:organization) }
   let!(:user) { create(:user) }
+  let!(:user1) { create(:user, email: 'user1@osem.io') }
 
   context 'logged in as user with no role' do
     before :each do
@@ -172,7 +173,7 @@ describe Admin::OrganizationsController do
       let(:org_admin_role) { Role.find_by(name: 'organization_admin', resource: organization) }
 
       before do
-        post :assign_org_admins, organization_id: organization.id,
+        post :assign_org_admins, id: organization.id,
                                  user: { email: 'user1@osem.io' }
       end
 
@@ -186,7 +187,7 @@ describe Admin::OrganizationsController do
       let!(:org_admin_user) { create(:user, role_ids: [org_admin_role.id]) }
 
       before do
-        delete :unassign_org_admins, organization_id: organization.id,
+        delete :unassign_org_admins, id: organization.id,
                                      user: { email: org_admin_user.email }
       end
 

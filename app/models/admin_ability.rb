@@ -94,7 +94,7 @@ class AdminAbility
     can [:read, :update, :destroy, :assign_org_admins, :unassign_org_admins, :admins], Organization, id: org_ids_for_organization_admin
     can :new, Conference
     can :manage, Conference, organization_id: org_ids_for_organization_admin
-    can [:index, :show], Role 
+    can [:index, :show], Role
 
     signed_in_with_organizer_role(user, conf_ids_for_organization_admin)
   end

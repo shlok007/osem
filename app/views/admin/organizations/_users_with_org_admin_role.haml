@@ -5,7 +5,7 @@
     %thead
       %th Name
       %th Email
-      - if ( can? :unassign_org_admins, role )
+      - if ( can? :unassign_org_admins, organization )
         %th
           Actions
     %tbody
@@ -13,7 +13,7 @@
         %tr
           %td= user.name
           %td= user.email
-          - if ( can? :unassign_org_admins, role )
+          - if ( can? :unassign_org_admins, organization )
             %td
               = link_to 'Remove from organization admin',
                 unassign_org_admins_admin_organization_path(organization.id,

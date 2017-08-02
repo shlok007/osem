@@ -7,7 +7,7 @@
         = @role.description
 
 .row.col-md-3
-  - if ( can? :assign_org_admins, @role )
+  - if ( can? :assign_org_admins, @organization )
     = semantic_form_for :user,
       url: assign_org_admins_admin_organization_path(@organization,
       @role.name), method: :post do |u|
