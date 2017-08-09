@@ -3,8 +3,7 @@ require 'spec_helper'
 describe Admin::OrganizationsController do
   let!(:admin) { create(:admin) }
   let!(:organization) { create(:organization) }
-  let!(:user) { create(:user) }
-  let!(:user1) { create(:user, email: 'user1@osem.io') }
+  let!(:user) { create(:user, email: 'user@osem.io') }
 
   context 'logged in as user with no role' do
     before :each do
@@ -174,11 +173,11 @@ describe Admin::OrganizationsController do
 
       before do
         post :assign_org_admins, id: organization.id,
-                                 user: { email: 'user1@osem.io' }
+                                 user: { email: 'user@osem.io' }
       end
 
       it 'assigns organization_admin role' do
-        expect(user1.roles).to eq [org_admin_role]
+        expect(user.roles).to eq [org_admin_role]
       end
     end
 

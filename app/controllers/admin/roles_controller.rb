@@ -103,10 +103,6 @@ module Admin
 
     protected
 
-    def user_params
-      params.require(:user).permit(:email, :state)
-    end
-
     def set_selection
       # Set 'organizer' as default role, when there is no other selection
       @selection = params[:id] ? params[:id].parameterize.underscore : 'organizer'
@@ -121,6 +117,10 @@ module Admin
 
     def role_params
       params.require(:role).permit(:name, :description, user_ids: [])
+    end
+
+    def user_params
+      params.require(:user).permit(:email, :state)
     end
   end
 end

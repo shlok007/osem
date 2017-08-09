@@ -75,7 +75,7 @@ module Admin
     private
 
     def user_params
-      params.require(:user).permit(:email, :state)
+      params.require(:user).permit(:email)
     end
 
     def verify_user
