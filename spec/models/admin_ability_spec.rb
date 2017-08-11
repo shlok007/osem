@@ -62,6 +62,7 @@ describe 'User with admin role' do
 
       it{ should_not be_able_to(:update, Role.find_by(name: 'organization_admin', resource: other_organization)) }
       it{ should_not be_able_to(:edit, Role.find_by(name: 'organization_admin', resource: other_organization)) }
+      it{ should be_able_to(:admins, organization) }
 
       it{ should_not be_able_to(:new, User.new) }
       it{ should_not be_able_to(:create, User.new) }
@@ -125,7 +126,6 @@ describe 'User with admin role' do
       let(:other_organization) { create(:organization) }
       let(:other_conference) { create(:conference, organization: other_organization) }
 
-      it{ should be_able_to(:admins, organization) }
       it{ should be_able_to(:assign_org_admins, organization) }
       it{ should be_able_to(:unassign_org_admins, organization) }
       it{ should be_able_to(:manage, my_conference) }
@@ -217,7 +217,6 @@ describe 'User with admin role' do
 
       it{ should be_able_to(:manage, resource) }
 
-      it{ should_not be_able_to(:admins, organization) }
       it{ should_not be_able_to(:assign_org_admins, organization) }
       it{ should_not be_able_to(:unassign_org_admins, organization) }
 
@@ -306,7 +305,6 @@ describe 'User with admin role' do
       it{ should be_able_to(:index, resource) }
       it{ should be_able_to(:show, resource) }
       it{ should be_able_to(:update, resource) }
-      it{ should_not be_able_to(:admins, organization) }
       it{ should_not be_able_to(:assign_org_admins, organization) }
       it{ should_not be_able_to(:unassign_org_admins, organization) }
 
@@ -376,7 +374,6 @@ describe 'User with admin role' do
       it{ should be_able_to(:index, resource) }
       it{ should be_able_to(:show, resource) }
       it{ should be_able_to(:update, resource) }
-      it{ should_not be_able_to(:admins, organization) }
       it{ should_not be_able_to(:assign_org_admins, organization) }
       it{ should_not be_able_to(:unassign_org_admins, organization) }
 
@@ -446,7 +443,6 @@ describe 'User with admin role' do
       it{ should be_able_to(:index, resource) }
       it{ should be_able_to(:show, resource) }
       it{ should be_able_to(:update, resource) }
-      it{ should_not be_able_to(:admins, organization) }
       it{ should_not be_able_to(:assign_org_admins, organization) }
       it{ should_not be_able_to(:unassign_org_admins, organization) }
 

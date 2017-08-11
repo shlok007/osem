@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Admin::OrganizationsController do
   let!(:admin) { create(:admin) }
   let!(:organization) { create(:organization) }
-  let!(:user) { create(:user, email: 'user@osem.io') }
+  let!(:user) { create(:user) }
 
   context 'logged in as user with no role' do
     before :each do
@@ -173,7 +173,7 @@ describe Admin::OrganizationsController do
 
       before do
         post :assign_org_admins, id: organization.id,
-                                 user: { email: 'user@osem.io' }
+                                 user: { email: user.email }
       end
 
       it 'assigns organization_admin role' do

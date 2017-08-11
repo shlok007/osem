@@ -118,7 +118,6 @@ feature Role do
         click_button 'Add'
         user_with_no_role.reload
 
-        expect(page).to have_text(user_with_no_role.email)
         expect(user_with_no_role.has_role?('organization_admin', organization)).to eq true
       end
 
@@ -126,17 +125,20 @@ feature Role do
         click_link('Admins', href: admins_admin_organization_path(organization.id))
 
         first('tr').find('.btn-danger').click
-
-        expect(page).to_not have_text(user_with_no_role.email)
         expect(organization_admin.has_role?('organization_admin', organization)).to eq false
       end
     end
 
     context 'for the organizations it does not belong to' do
-      scenario 'does not successfully add or remove role organization_admin' do
+      scenario 'does not successfully add role organization_admin' do
         click_link('Admins', href: admins_admin_organization_path(other_organization.id))
 
-        expect(flash).to eq('You are not authorized to access this page.')
+        expect(page.has_field?('user_email')).to eq false
+      end
+
+      scenario 'does not successfully removes role organization_admin' do
+        click_link('Admins', href: admins_admin_organization_path(other_organization.id))
+        expect(page.has_css?('.btn-danger')).to eq false
       end
     end
   end
