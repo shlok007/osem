@@ -20,6 +20,18 @@ class UsersController < ApplicationController
     end
   end
 
+  def signed_in_user
+    if current_user
+      redirect_to "#{params[:redirect_path]}?token=#{current_user.token}"
+    else
+      redirect_to new_user_session_path(redirect_path: params[:redirect_path])
+    end
+  end
+
+  def sign_in_from_hostdomain
+    redirect_to "#{ENV['OSEM_HOSTNAME']}/signed_in_user?redirect_path=#{request.referer}"
+  end
+
   private
 
     # Only allow a trusted parameter "white list" through.

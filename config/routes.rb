@@ -19,6 +19,8 @@ Osem::Application.routes.draw do
     mount LetterOpenerWeb::Engine, at: "/letter_opener"
   end
 
+  get '/signed_in_user', as: 'signed_in_user', to: 'users#signed_in_user'
+  get '/auth/users', as: 'sign_in_from_hostdomain', to: 'users#sign_in_from_hostdomain'
   resources :users, except: [:new, :index, :create, :destroy] do
     resources :openids, only: :destroy
   end

@@ -15,6 +15,7 @@ class Ability
 
   # Abilities for not signed in users (guests)
   def not_signed_in
+    can [:signed_in_user,:sign_in_from_hostdomain], User
     can [:index], Organization
     can [:index], Conference
     can [:show], Conference do |conference|

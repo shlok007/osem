@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   before_filter :store_location
   # Ensure every controller authorizes resource or skips authorization (skip_authorization_check)
   check_authorization unless: :devise_controller?
+  before_filter :sign_in_user_for_custom_domain
 
   def store_location
     # store last url - this is needed for post-login redirect to whatever the user last visited.
@@ -66,5 +67,15 @@ class ApplicationController < ActionController::Base
 
   def not_found
     raise ActionController::RoutingError.new('Not Found')
+  end
+
+  def sign_in_user_for_custom_domain
+    return unless params[:token].present?
+
+    user_to_sign_in = User.find_by(token: params[:token])
+    if user_to_sign_in
+      sign_in user_to_sign_in
+      user_to_sign_in.update_attribute(:token, Devise.friendly_token)
+    end
   end
 end
